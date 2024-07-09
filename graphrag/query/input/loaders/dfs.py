@@ -69,6 +69,28 @@ def read_entities(
         entities.append(entity)
     return entities
 
+def store_entity_name_embeddings(
+    entities: list[Entity],
+    vectorstore: BaseVectorStore
+) -> BaseVectorStore:
+    """Store entity name embeddings in a vectorstore."""
+    documents = [
+        VectorStoreDocument(
+            id=entity.id,
+            # text=entity.description,
+            # vector=entity.description_embedding,
+            text=entity.title,
+            vector=entity.name_embedding,
+            attributes=(
+                {"title": entity.title, **entity.attributes}
+                if entity.attributes
+                else {"title": entity.title}
+            ),
+        )
+        for entity in entities
+    ]
+    vectorstore.load_documents(documents=documents)
+    return vectorstore
 
 def store_entity_semantic_embeddings(
     entities: list[Entity],
