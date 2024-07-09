@@ -124,7 +124,7 @@ def read_indexer_entities(
         description_col="description",
         community_col="community",
         rank_col="rank",
-        name_embedding_col=None,
+        name_embedding_col="name_embedding",
         description_embedding_col="description_embedding",
         graph_embedding_col=None,
         text_unit_ids_col="text_unit_ids",
