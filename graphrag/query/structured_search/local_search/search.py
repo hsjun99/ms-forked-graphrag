@@ -106,6 +106,20 @@ class LocalSearch(BaseSearch):
                 prompt_tokens=num_tokens(search_prompt, self.token_encoder),
             )
 
+    def get_context(
+        self,
+        query: str,
+        conversation_history: ConversationHistory | None = None,
+        **kwargs,
+    ):
+        """Build local search context that fits a single context window."""
+        return self.context_builder.build_context(
+            query=query,
+            conversation_history=conversation_history,
+            **kwargs,
+            **self.context_builder_params,
+        )
+
     def search(
         self,
         query: str,
