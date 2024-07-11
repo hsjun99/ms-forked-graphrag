@@ -51,6 +51,7 @@ class LocalQuestionGen(BaseQuestionGen):
         question_history: list[str],
         context_data: str | None,
         question_count: int,
+        language: str,
         is_wuzu: bool,
         **kwargs,
     ) -> QuestionResult:
@@ -91,8 +92,9 @@ class LocalQuestionGen(BaseQuestionGen):
                 )
             else:
                 system_prompt = self.wuzu_system_prompt.format(
-                    context_data=context_data, question_count=question_count
+                    context_data=context_data, question_count=question_count, language=language
                 )
+
             question_messages = [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": question_text},

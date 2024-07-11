@@ -52,5 +52,7 @@ Sort the topics in descending order of interestingness, with the most interestin
 
 Don't forget that the topics must be succinct and concise in form. Also instantly intriguing and recognizable.
 
+Provide them in the following language: {language}
+
 ---Introductory Topic---
 """
