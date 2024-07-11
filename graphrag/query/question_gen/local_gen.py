@@ -16,7 +16,7 @@ from graphrag.query.context_builder.conversation_history import (
 from graphrag.query.llm.base import BaseLLM, BaseLLMCallback
 from graphrag.query.llm.text_utils import num_tokens
 from graphrag.query.question_gen.base import BaseQuestionGen, QuestionResult
-from graphrag.query.question_gen.system_prompt import QUESTION_SYSTEM_PROMPT
+from graphrag.query.question_gen.system_prompt import QUESTION_SYSTEM_PROMPT, WUZU_NEXT_TOPIC_SYSTEM_PROMPT
 
 log = logging.getLogger(__name__)
 
@@ -30,6 +30,7 @@ class LocalQuestionGen(BaseQuestionGen):
         context_builder: LocalContextBuilder,
         token_encoder: tiktoken.Encoding | None = None,
         system_prompt: str = QUESTION_SYSTEM_PROMPT,
+        wuzu_system_prompt: str = WUZU_NEXT_TOPIC_SYSTEM_PROMPT,
         callbacks: list[BaseLLMCallback] | None = None,
         llm_params: dict[str, Any] | None = None,
         context_builder_params: dict[str, Any] | None = None,
@@ -42,6 +43,7 @@ class LocalQuestionGen(BaseQuestionGen):
             context_builder_params=context_builder_params,
         )
         self.system_prompt = system_prompt
+        self.wuzu_system_prompt = wuzu_system_prompt
         self.callbacks = callbacks
 
     async def agenerate(
@@ -49,6 +51,7 @@ class LocalQuestionGen(BaseQuestionGen):
         question_history: list[str],
         context_data: str | None,
         question_count: int,
+        is_wuzu: bool,
         **kwargs,
     ) -> QuestionResult:
         """
@@ -82,9 +85,14 @@ class LocalQuestionGen(BaseQuestionGen):
         log.info("GENERATE QUESTION: %s. LAST QUESTION: %s", start_time, question_text)
         system_prompt = ""
         try:
-            system_prompt = self.system_prompt.format(
-                context_data=context_data, question_count=question_count
-            )
+            if not is_wuzu:
+                system_prompt = self.system_prompt.format(
+                    context_data=context_data, question_count=question_count
+                )
+            else:
+                system_prompt = self.wuzu_system_prompt.format(
+                    context_data=context_data, question_count=question_count
+                )
             question_messages = [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": question_text},
