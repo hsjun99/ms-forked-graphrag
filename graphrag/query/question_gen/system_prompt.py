@@ -28,6 +28,7 @@ If the user's questions reference several named entities, then each candidate qu
 """
 
 
+
 WUZU_NEXT_TOPIC_SYSTEM_PROMPT = """
 ---Role---
 
@@ -47,9 +48,9 @@ These candidate topics should represent the most important, urgent, engaging, or
 
 The topics must not be similar to each other, be succinct in form, and should be reflected in the data tables provided.
 
-Sort the topics in descending order of interestingness, with the most interesting question in front (topics that would genuinely interest ppl's minds / relatable must be prioritized. / e.g. public culture, mysteries etc.).
+Sort the topics in descending order of interestingness, with the most interesting question in front (topics that would genuinely interest ppl's minds / relatable must be prioritized. / e.g. cultural influence, mysteries, conspiracies etc.).
 
-Don't forget that the topics must be succinct and concise in form, but instantly recognizable and intriguing.
+Don't forget that the topics must be succinct and concise in form. Also instantly intriguing and recognizable.
 
 ---Introductory Topic---
 """
